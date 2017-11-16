@@ -50,7 +50,6 @@ public class Calendar_System {
 		boolean exists = e.exists();
 		if (exists == true) {
 			try {
-				boolean hasevent = true;
 				ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("event.txt"));
 				int events_to_read = (int) objectInputStream.readObject();
 				while (events_to_read > 0) {

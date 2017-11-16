@@ -85,7 +85,7 @@ public class Calendars {
 	 * Gets the month visual
 	 * @param prevornext determines if user what's the next or previous month
 	 */
-	public void get_Month_Calendar_Event(int prevornext) {
+	public int[][] get_Month_Calendar_Event(int prevornext) {
 		current_month += prevornext;
 		if (current_month == 12) {
 			current_month = 0;
@@ -122,14 +122,15 @@ public class Calendars {
 				}
 			}
 		}
-		System.out.println(toString(row_column));
+		//System.out.println(toString(row_column));
+		return row_column;
 	}
 
 	/**
 	 * Gets the daily events if any
 	 * @param prevornext user interacts with this class to see next or previous day 
 	 */
-	public void getDayView(int prevornext, EventList event) {
+	public String getDayView(int prevornext, EventList event) {
 		int totaldays = cal.getActualMaximum(Calendar.DATE);
 		current_day += prevornext;
 		if (current_day > totaldays) {
@@ -151,17 +152,18 @@ public class Calendars {
 		FULL_DAYS that_day = arrayOfFullDays[tempo.get(Calendar.DAY_OF_WEEK) - 1];
 		AB_MONTHS that_month = arrayOfABMonths[tempo.get(Calendar.MONTH)];
 		System.out.println(that_day + ", " + that_month + " " + current_day + ", " + current_year);
+		String print = "";
 		for (Event current : list_of_month_events) {
 			if (current.getDay() == (current_day)) {
-				String print = "";
 				if (!current.getEndtime().equals("n/a")) {
 					print = current.getTitle() + " " + current.getStarttime() + " - " + current.getEndtime();
 				} else {
 					print = current.getTitle() + " " + current.getStarttime();
 				}
-				System.out.println(print);
+				//System.out.println(print);
 			}
 		}
+		return print;
 	}
 
 	/**

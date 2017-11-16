@@ -1,23 +1,29 @@
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
-public class View {
-	public static void main(String[] args) {
-		Calendar_System calendar = new Calendar_System();
+public class View implements ChangeListener{
+	private JButton quit;
+	private JButton create;
+	private JButton forward;
+	private JButton previous;
+	Calendar_System calendar;
+	private JFrame frame;
+	private JTextField fields;
+	
+	public View(){	
+		calendar = new Calendar_System();
 		//Hierarchies
-		JFrame frame = new JFrame("Calendar");
+		frame = new JFrame("Calendar");
 		JPanel previousbutton = new JPanel(new BorderLayout());
 		JPanel forwardbutton = new JPanel(new BorderLayout());
 		JPanel quitbutton = new JPanel(new BorderLayout());
@@ -26,32 +32,19 @@ public class View {
 		JPanel textfield = new JPanel(new BorderLayout());
 		
 		//Buttons for the locations
-		JButton quit = new JButton("QUIT");
-		quit.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				try {
-					calendar.Quit();
-				} catch (IOException e) {
-					System.out.println("Location: Quit: "+e);
-				}
-				frame.dispose();
-			}
-		});
-		JButton create = new JButton("Create");
-		JButton previous = new JButton("<");
-		JButton forward = new JButton(">");
+		quit = new JButton("Quit");
+		create = new JButton("Create");
+		previous = new JButton("<");
+		forward = new JButton(">");
 		
-		//Text field
+		//Text field and area
 		JTextArea viewevents = new JTextArea();
-		JScrollBar scroll = new JScrollBar(JScrollBar.VERTICAL);
 		viewevents.setEnabled(true);
 		
 		
 
 		//Adding into the panels
 		textfield.add(viewevents,BorderLayout.CENTER);
-		textfield.add(scroll,BorderLayout.EAST);
 		previousbutton.add(previous,BorderLayout.EAST);
 		forwardbutton.add(forward,BorderLayout.WEST);
 		quitbutton.add(quit,BorderLayout.CENTER);
@@ -65,9 +58,38 @@ public class View {
 		
 		//Adding the panels into the frame
 		frame.add(all_buttons,BorderLayout.NORTH);
-		frame.add(textfield,BorderLayout.CENTER);
+		//frame.add(textfield,BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public JButton getQuitButton(){
+		return quit;
+	}
+	
+	public JButton getForwardButton(){
+		return forward;
+	}
+	
+	public JButton getPreviousButton(){
+		return previous;
+	}
+	
+	public JButton getCreateButton(){
+		return create;
+	}
+	public Calendar_System getCalendar(){
+		return calendar;
+	}
+	
+	public JFrame getMainFrame(){
+		return frame;
 	}
 }
