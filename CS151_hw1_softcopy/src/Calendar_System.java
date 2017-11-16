@@ -1,5 +1,4 @@
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -78,7 +77,7 @@ public class Calendar_System {
 	public void View(String decision) {
 		if (events.isEmpty() == false) {
 			visual.passEvents(events, 0);
-		}else{
+		} else {
 			visual.resetEvents();
 		}
 		if (decision.contains("D")) {
@@ -134,9 +133,9 @@ public class Calendar_System {
 	/**
 	 * Goes to a specific date and will load the event
 	 */
-	public void Go_to(String input) {
+	public String Go_to(String input) {
 		visual.passEvents(Integer.parseInt(input.substring(0, 2)), events);
-		visual.getDayView(input);
+		return visual.getDayView(input);
 	}
 
 	/**
@@ -192,6 +191,10 @@ public class Calendar_System {
 			objectOutputStream.writeObject(m);
 		objectOutputStream.close();
 
+	}
+
+	public EventList getEvents() {
+		return events;
 	}
 
 }

@@ -160,7 +160,7 @@ public class Calendars {
 				} else {
 					print = current.getTitle() + " " + current.getStarttime();
 				}
-				//System.out.println(print);
+				System.out.println(print);
 			}
 		}
 		return print;
@@ -170,7 +170,7 @@ public class Calendars {
 	 * Gets the DayView for the Go_To method
 	 * @param date allows user to navigate straight to the day
 	 */
-	public void getDayView(String date) {
+	public String getDayView(String date) {
 		int this_month = Integer.parseInt(date.substring(0, 2));
 		int this_day = Integer.parseInt(date.substring(3, 5));
 		int this_year = Integer.parseInt(date.substring(6, 10));
@@ -178,12 +178,14 @@ public class Calendars {
 		FULL_DAYS that_day = arrayOfFullDays[tempo.get(Calendar.DAY_OF_WEEK) - 1];
 		AB_MONTHS that_month = arrayOfABMonths[tempo.get(Calendar.MONTH)];
 		System.out.println(that_day + ", " + that_month + " " + this_day + ", " + this_year);
+		String print = "";
 		for (Event current : list_of_month_events) {
 			if (current.getDay() == (this_day)) {
-				String print = current.getTitle() + " " + current.getStarttime() + " - " + current.getEndtime();
+				print = current.getTitle() + " " + current.getStarttime() + " - " + current.getEndtime();
 				System.out.println(print);
 			}
 		}
+		return print;
 
 	}
 
