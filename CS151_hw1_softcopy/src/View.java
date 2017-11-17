@@ -71,7 +71,9 @@ public class View implements ChangeListener {
 
 		}
 		
+		
 		// Text field and area
+		JTextField currentdate = new JTextField(date);
 		JTextField[] fields = new JTextField[7];
 		JPanel nameofday = new JPanel();
 		nameofday.setLayout(new BoxLayout(nameofday, BoxLayout.X_AXIS));
@@ -88,11 +90,14 @@ public class View implements ChangeListener {
 		viewevents.setEnabled(true);
 		month.setEnabled(false);		
 		
+		
+		
 		// Adding into the panels	
 		days.add(nameofday,BorderLayout.NORTH);
 		days.add(panel,BorderLayout.CENTER);
 		nestmonth.add(month,BorderLayout.NORTH);
 		nestmonth.add(days,BorderLayout.CENTER);
+		textfield.add(currentdate, BorderLayout.NORTH);
 		textfield.add(viewevents, BorderLayout.CENTER);
 		previousbutton.add(previous, BorderLayout.EAST);
 		forwardbutton.add(forward, BorderLayout.WEST);
