@@ -126,6 +126,11 @@ public class Calendars {
 		return row_column;
 	}
 
+	/**
+	 * Gets the name of the current month
+	 * @param prevornext
+	 * @return
+	 */
 	public String getMonthName(int prevornext){
 		current_month += prevornext;
 		if (current_month == 12) {
@@ -211,8 +216,23 @@ public class Calendars {
 		return print;
 	}
 	
+	
+	/**
+	 * Returns the name of the current day
+	 * @return
+	 */
+	public String getCurrentDay(){
+		GregorianCalendar tempo = new GregorianCalendar(current_year, current_month, current_day);
+		FULL_DAYS that_day = arrayOfFullDays[tempo.get(Calendar.DAY_OF_WEEK) - 1];
+		return String.valueOf(that_day);
+	}
+	
+	/**
+	 * Returns the entire date
+	 * @return
+	 */
 	public String getCurrent(){
-		String date = current_month+"/"+current_day+"/"+current_year;
+		String date = (current_month+1)+"/"+current_day+"/"+current_year;
 		return date;
 	}
 

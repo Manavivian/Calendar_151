@@ -117,6 +117,14 @@ public class Calendar_System {
 		return visual.getCurrent();
 	}
 	
+	public void forwardDay(){
+		visual.getDayView(1,events);
+	}
+	
+	public void previousDay(){
+		visual.getDayView(-1,events);
+	}
+	
 	public int[] getMonth(int offset) {
 		int[][] convert = visual.get_Month_Calendar_Event(offset);
 		int[] days = new int[42];
@@ -134,8 +142,12 @@ public class Calendar_System {
 		return visual.getMonthName(offset);
 	}
 	
-	public String[] getDayName(){
+	public String[] getDayNames(){
 		return visual.getDayName();
+	}
+	
+	public String getNameofDay(){
+		return visual.getCurrentDay();
 	}
 
 	/**

@@ -6,6 +6,7 @@ public class MVCTester {
 		View Cal = new View();
 		EventModel events = new EventModel(Cal);
 		Controller connect = new Controller(events);
+		events.attach(Cal);
 		connect.attach(Cal);
 
 	}

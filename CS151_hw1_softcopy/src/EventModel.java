@@ -23,8 +23,21 @@ public class EventModel {
 			l.stateChanged(new ChangeEvent(this));
 	}
 	
+	public void nextDay(){
+		calendar.forwardDay();
+		for (ChangeListener l : listeners)
+			l.stateChanged(new ChangeEvent(this));
+	}
+	
+	public void previousDay(){
+		calendar.previousDay();
+		for (ChangeListener l : listeners)
+			l.stateChanged(new ChangeEvent(this));
+	}
+	
 	public EventList getData(){
-		return calendar.getEvents();
+		EventList events = calendar.getEvents();
+		return events;
 	}
 	
 	public String currentDate(){

@@ -41,8 +41,8 @@ public class Controller {
 				TextField name_of_event = new TextField("Untitled Event");
 				TextField current_date = new TextField(currentDate);
 				current_date.setEditable(false);
-				TextField starting_time = new TextField();
-				TextField ending_time = new TextField();
+				TextField starting_time = new TextField("HH:MM");
+				TextField ending_time = new TextField("HH:MM");
 				
 				JButton save = new JButton("Save");
 				save.addActionListener(new ActionListener() {
@@ -69,10 +69,20 @@ public class Controller {
 		});
 		main.getForwardButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				model.nextDay();
 			}
 		});
 		main.getPreviousButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.previousDay();
+			}
+		});
+		main.getPreviousMonthButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		main.getForwardMonthButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 			}

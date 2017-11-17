@@ -18,38 +18,46 @@ public class View implements ChangeListener {
 	private JButton create;
 	private JButton forward;
 	private JButton previous;
+	private JButton fmonth;
+	private JButton pmonth;
+	
 	Calendar_System calendar;
 	private JFrame frame;
-	private JTextField fields;
+	private JTextField fields[];
 	private EventList events;
 	private EventModel m;
 	private JButton[] buttons;
-	private String date;
-
+	private JTextField currentdate;
+	private String date,day;
+	private int currentday;
+	
 	public View() throws IOException {
 		calendar = new Calendar_System();
 		calendar.Load();
 		events = calendar.getEvents();
-		date = calendar.getDate();
+		day = calendar.getNameofDay();
+		date = day + " " + calendar.getDate().substring(0,5);
+		currentday= Integer.parseInt(calendar.getDate().substring(3,5));
+		
 		// Hierarchies
 		frame = new JFrame("Calendar");
-		JPanel previousbutton = new JPanel(new BorderLayout());
-		JPanel forwardbutton = new JPanel(new BorderLayout());
 		JPanel quitbutton = new JPanel(new BorderLayout());
 		JPanel createbutton = new JPanel(new BorderLayout());
 		JPanel all_buttons = new JPanel();
 		JPanel textfield = new JPanel(new BorderLayout());
 		JPanel days = new JPanel(new BorderLayout());
 		JPanel nestmonth = new JPanel(new BorderLayout());
+		JPanel allnextprev_buttons = new JPanel(new GridLayout(1,4));
 
 		// Buttons for the locations
 		quit = new JButton("Quit");
 		create = new JButton("Create");
 		previous = new JButton("<");
 		forward = new JButton(">");
+		fmonth = new JButton(">>");
+		pmonth = new JButton("<<");
 		
-
-
+		
 
 		// Buttons for the days of the month
 		int[] has_days = calendar.getMonth(0);
@@ -68,16 +76,17 @@ public class View implements ChangeListener {
 			} else {
 				panel.add(new JPanel());
 			}
-
 		}
+		buttons[currentday-1].setBackground(Color.LIGHT_GRAY);
+		buttons[currentday-1].setEnabled(false);
 		
 		
 		// Text field and area
-		JTextField currentdate = new JTextField(date);
-		JTextField[] fields = new JTextField[7];
+		currentdate = new JTextField(date);
+		fields = new JTextField[7];
 		JPanel nameofday = new JPanel();
 		nameofday.setLayout(new BoxLayout(nameofday, BoxLayout.X_AXIS));
-		String[] names = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+		String[] names = calendar.getDayNames();
 		int x =0;
 		for(JTextField current: fields){
 			current= new JTextField(names[x]);
@@ -99,15 +108,17 @@ public class View implements ChangeListener {
 		nestmonth.add(days,BorderLayout.CENTER);
 		textfield.add(currentdate, BorderLayout.NORTH);
 		textfield.add(viewevents, BorderLayout.CENTER);
-		previousbutton.add(previous, BorderLayout.EAST);
-		forwardbutton.add(forward, BorderLayout.WEST);
-		quitbutton.add(quit, BorderLayout.CENTER);
+		allnextprev_buttons.add(pmonth);
+		allnextprev_buttons.add(previous);
+		allnextprev_buttons.add(forward);
+		allnextprev_buttons.add(fmonth);
+		
+		quitbutton.add(quit, BorderLayout.EAST);
 		createbutton.add(create, BorderLayout.WEST);
 
 		all_buttons.setLayout(new BoxLayout(all_buttons, BoxLayout.X_AXIS));
 		all_buttons.add(createbutton);
-		all_buttons.add(previousbutton);
-		all_buttons.add(forwardbutton);
+		all_buttons.add(allnextprev_buttons);
 		all_buttons.add(quitbutton);
 
 		// Adding the panels into the frame
@@ -119,10 +130,15 @@ public class View implements ChangeListener {
 		frame.setVisible(true);
 	}
 
-	@Override
 	public void stateChanged(ChangeEvent e) {
-		events = m.getData();
-		date = calendar.getDate();
+		buttons[currentday-1].setBackground(null);
+		buttons[currentday-1].setEnabled(true);
+		//events = m.getData();
+		day = calendar.getNameofDay();
+		date = day + " " + calendar.getDate().substring(0,5);
+		currentday = Integer.parseInt(calendar.getDate().substring(3,5));
+		buttons[currentday-1].setBackground(Color.LIGHT_GRAY);
+		buttons[currentday-1].setEnabled(false);
 	}
 
 	/**
@@ -160,6 +176,14 @@ public class View implements ChangeListener {
 		return previous;
 	}
 
+	public JButton getForwardMonthButton(){
+		return fmonth;
+	}
+	
+	public JButton getPreviousMonthButton(){
+		return pmonth;
+	}
+	
 	/**
 	 * Returns the create button
 	 * 
