@@ -122,10 +122,33 @@ public class Calendars {
 				}
 			}
 		}
-		//System.out.println(toString(row_column));
+		System.out.println(toString(row_column));
 		return row_column;
 	}
 
+	public String getMonthName(int prevornext){
+		current_month += prevornext;
+		if (current_month == 12) {
+			current_month = 0;
+			current_year++;
+		} else if (current_month == -1) {
+			current_month = 11;
+			current_year--;
+		}
+		String currentmonthyear = String.valueOf(arrayOfMonths[current_month])+" " + current_year ;
+		return currentmonthyear;
+	}
+	
+	public String[] getDayName(){
+		String[] days = new String[7];
+		int x = 0;
+		for (DAYS day : arrayOfDays) { 
+			days[x] = String.valueOf(day);
+			x++;
+		}
+		return days;
+	}
+	
 	/**
 	 * Gets the daily events if any
 	 * @param prevornext user interacts with this class to see next or previous day 
@@ -186,7 +209,11 @@ public class Calendars {
 			}
 		}
 		return print;
-
+	}
+	
+	public String getCurrent(){
+		String date = current_month+"/"+current_day+"/"+current_year;
+		return date;
 	}
 
 	/**

@@ -26,14 +26,20 @@ public class Controller {
 	 * @param v
 	 */
 	public void attach(View main) {
+		for(JButton current: main.getDays()){
+			current.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					String date = current.getName();
+				}
+			});
+		}
 		main.getCreateButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				String currentDate = model.currentDate();
 				JFrame create_window = new JFrame("Create Event");
 				JPanel time = new JPanel();
-				
 				TextField name_of_event = new TextField("Untitled Event");
-				TextField current_date = new TextField("Current Date");
+				TextField current_date = new TextField(currentDate);
 				current_date.setEditable(false);
 				TextField starting_time = new TextField();
 				TextField ending_time = new TextField();
@@ -42,7 +48,7 @@ public class Controller {
 				save.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if((name_of_event.getText() != null) && (starting_time.getText() != null))
-							model.add(name_of_event.getText(), date, starting_time.getText(), ending_time.getText());
+							model.add(name_of_event.getText(), currentDate, starting_time.getText(), ending_time.getText());
 						create_window.dispose();
 					}
 					
@@ -78,6 +84,7 @@ public class Controller {
 				} catch (IOException ok) {
 					System.out.println("Location: Quit: "+ ok);
 				}
+				
 				main.getMainFrame().dispose();
 			}
 		});

@@ -27,5 +27,8 @@ public class EventModel {
 		return calendar.getEvents();
 	}
 	
+	public String currentDate(){
+		return calendar.getDate();
+	}
 	
 }

@@ -113,6 +113,31 @@ public class Calendar_System {
 		}
 	}
 
+	public String getDate(){
+		return visual.getCurrent();
+	}
+	
+	public int[] getMonth(int offset) {
+		int[][] convert = visual.get_Month_Calendar_Event(offset);
+		int[] days = new int[42];
+		for (int x = 0, z = 0; x < 6; x++) {
+			for (int y = 0; y < 7; y++) {
+				days[z]=convert[x][y];
+				z++;
+			}
+		}
+
+		return days;
+	}
+	
+	public String getNameofMonth(int offset){
+		return visual.getMonthName(offset);
+	}
+	
+	public String[] getDayName(){
+		return visual.getDayName();
+	}
+
 	/**
 	 * Makes an event
 	 * 

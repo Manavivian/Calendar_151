@@ -1,5 +1,9 @@
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.io.IOException;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,10 +23,14 @@ public class View implements ChangeListener {
 	private JTextField fields;
 	private EventList events;
 	private EventModel m;
+	private JButton[] buttons;
+	private String date;
 
-	public View() {
+	public View() throws IOException {
 		calendar = new Calendar_System();
+		calendar.Load();
 		events = calendar.getEvents();
+		date = calendar.getDate();
 		// Hierarchies
 		frame = new JFrame("Calendar");
 		JPanel previousbutton = new JPanel(new BorderLayout());
@@ -31,18 +39,60 @@ public class View implements ChangeListener {
 		JPanel createbutton = new JPanel(new BorderLayout());
 		JPanel all_buttons = new JPanel();
 		JPanel textfield = new JPanel(new BorderLayout());
+		JPanel days = new JPanel(new BorderLayout());
+		JPanel nestmonth = new JPanel(new BorderLayout());
 
 		// Buttons for the locations
 		quit = new JButton("Quit");
 		create = new JButton("Create");
 		previous = new JButton("<");
 		forward = new JButton(">");
+		
 
+
+
+		// Buttons for the days of the month
+		int[] has_days = calendar.getMonth(0);
+		buttons = new JButton[31];
+		for (int i = 0; i < 31; i++) {
+			buttons[i] = new JButton(String.valueOf(i + 1));
+		}
+		
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0, 7));
+		for (int i = 0, x = 0; i < 42; i++) {
+			if (has_days[i] != 0) {
+				panel.add(buttons[x]);
+				x++;
+			} else {
+				panel.add(new JPanel());
+			}
+
+		}
+		
 		// Text field and area
+		JTextField[] fields = new JTextField[7];
+		JPanel nameofday = new JPanel();
+		nameofday.setLayout(new BoxLayout(nameofday, BoxLayout.X_AXIS));
+		String[] names = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+		int x =0;
+		for(JTextField current: fields){
+			current= new JTextField(names[x]);
+			nameofday.add(current);
+			x++;
+			current.setEnabled(false);
+		}
 		JTextArea viewevents = new JTextArea();
+		JTextField month = new JTextField(calendar.getNameofMonth(0));
 		viewevents.setEnabled(true);
-
-		// Adding into the panels
+		month.setEnabled(false);		
+		
+		// Adding into the panels	
+		days.add(nameofday,BorderLayout.NORTH);
+		days.add(panel,BorderLayout.CENTER);
+		nestmonth.add(month,BorderLayout.NORTH);
+		nestmonth.add(days,BorderLayout.CENTER);
 		textfield.add(viewevents, BorderLayout.CENTER);
 		previousbutton.add(previous, BorderLayout.EAST);
 		forwardbutton.add(forward, BorderLayout.WEST);
@@ -56,8 +106,9 @@ public class View implements ChangeListener {
 		all_buttons.add(quitbutton);
 
 		// Adding the panels into the frame
+		frame.add(nestmonth,BorderLayout.WEST);
 		frame.add(all_buttons, BorderLayout.NORTH);
-		// frame.add(textfield,BorderLayout.CENTER);
+		frame.add(textfield,BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
@@ -66,9 +117,17 @@ public class View implements ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		events = m.getData();
-
+		date = calendar.getDate();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public JButton[] getDays(){
+		return buttons;
+	}
+	
 	/**
 	 * Gets the Quit button
 	 * 
