@@ -250,9 +250,8 @@ public class Calendars {
 	 * @param date
 	 *            allows user to navigate straight to the day
 	 */
-	public void getDayView(int month, int day) {
+	public void getDayView(int day) {
 		current_day =day;
-		current_month = month;
 	}
 
 	/**

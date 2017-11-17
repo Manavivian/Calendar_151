@@ -182,7 +182,7 @@ public class Calendar_System {
 	 */
 	public void Go_to(int month,int day) {
 		visual.passEvents(month, events);
-		visual.getDayView(month,day);
+		visual.getDayView(day);
 	}
 
 	/**
