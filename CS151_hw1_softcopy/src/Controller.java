@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,10 @@ public class Controller {
 		for(JButton current: main.getDays()){
 			current.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					String date = current.getName();
+					String name = e.getActionCommand();
+					int daydate = Integer.valueOf(name);
+					int month = model.getMonthDate();
+					model.go_To(month, daydate);
 				}
 			});
 		}
@@ -79,12 +83,12 @@ public class Controller {
 		});
 		main.getPreviousMonthButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				model.previousMonth();
 			}
 		});
 		main.getForwardMonthButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				model.nextMonth();
 			}
 		});
 		main.getQuitButton().addActionListener(new ActionListener() {

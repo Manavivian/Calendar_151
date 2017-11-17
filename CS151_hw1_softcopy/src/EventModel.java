@@ -35,13 +35,42 @@ public class EventModel {
 			l.stateChanged(new ChangeEvent(this));
 	}
 	
+	public void nextMonth(){
+		calendar.getMonth(1);
+		for (ChangeListener l : listeners)
+			l.stateChanged(new ChangeEvent(this));
+
+	}
+	
+	public void previousMonth(){
+		calendar.getMonth(-1);		
+		for (ChangeListener l : listeners)
+			l.stateChanged(new ChangeEvent(this));
+	}
+	
+	public void go_To(int month, int day){
+		calendar.Go_to(month,day);
+		for(ChangeListener l: listeners)
+			l.stateChanged(new ChangeEvent(this));
+	}
+	
+	public int getMonthDate(){
+		return calendar.getMonth();
+	}
+	
+	public String currentDate(){
+		String current = calendar.getMonth()+ " " + calendar.getDay();
+		return current;
+	}
+	
 	public EventList getData(){
 		EventList events = calendar.getEvents();
 		return events;
 	}
 	
-	public String currentDate(){
-		return calendar.getDate();
+	
+	public Calendar_System getCalendar(){
+		return calendar;
 	}
 	
 }

@@ -20,25 +20,26 @@ public class View implements ChangeListener {
 	private JButton previous;
 	private JButton fmonth;
 	private JButton pmonth;
-	
-	Calendar_System calendar;
-	private JFrame frame;
-	private JTextField fields[];
-	private EventList events;
-	private EventModel m;
 	private JButton[] buttons;
+	private JFrame frame;
+	private JPanel days;
+	private JPanel nestmonth;
+	private JPanel panel;
+	private JTextField month;
+		
+	private Calendar_System calendar;
 	private JTextField currentdate;
 	private String date,day;
 	private int currentday;
+	private int currentmonth;
 	
 	public View() throws IOException {
 		calendar = new Calendar_System();
 		calendar.Load();
-		events = calendar.getEvents();
 		day = calendar.getNameofDay();
-		date = day + " " + calendar.getDate().substring(0,5);
-		currentday= Integer.parseInt(calendar.getDate().substring(3,5));
-		
+		date = day + " " + calendar.getMonth()+"/" +calendar.getDay();
+		currentday= calendar.getDay();
+		currentmonth = calendar.getMonth();
 		// Hierarchies
 		frame = new JFrame("Calendar");
 		JPanel quitbutton = new JPanel(new BorderLayout());
@@ -67,7 +68,7 @@ public class View implements ChangeListener {
 		}
 		
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setLayout(new GridLayout(0, 7));
 		for (int i = 0, x = 0; i < 42; i++) {
 			if (has_days[i] != 0) {
@@ -83,7 +84,7 @@ public class View implements ChangeListener {
 		
 		// Text field and area
 		currentdate = new JTextField(date);
-		fields = new JTextField[7];
+		JTextField[] fields = new JTextField[7];
 		JPanel nameofday = new JPanel();
 		nameofday.setLayout(new BoxLayout(nameofday, BoxLayout.X_AXIS));
 		String[] names = calendar.getDayNames();
@@ -95,7 +96,7 @@ public class View implements ChangeListener {
 			current.setEnabled(false);
 		}
 		JTextArea viewevents = new JTextArea();
-		JTextField month = new JTextField(calendar.getNameofMonth(0));
+		month = new JTextField(calendar.getNameofMonth(0));
 		viewevents.setEnabled(true);
 		month.setEnabled(false);		
 		
@@ -130,17 +131,39 @@ public class View implements ChangeListener {
 		frame.setVisible(true);
 	}
 
+
 	public void stateChanged(ChangeEvent e) {
 		buttons[currentday-1].setBackground(null);
 		buttons[currentday-1].setEnabled(true);
-		//events = m.getData();
 		day = calendar.getNameofDay();
-		date = day + " " + calendar.getDate().substring(0,5);
-		currentday = Integer.parseInt(calendar.getDate().substring(3,5));
+		int temp = currentmonth;
+		currentmonth = calendar.getMonth();
+		date = day + " " + calendar.getMonth()+"/" +calendar.getDay();
+		if(temp!= currentmonth)
+			repaint();
+		currentday= calendar.getDay();
+		System.out.println(currentday);
 		buttons[currentday-1].setBackground(Color.LIGHT_GRAY);
 		buttons[currentday-1].setEnabled(false);
 	}
 
+	public void repaint(){
+		month = new JTextField(currentmonth);
+		int[] has_days = calendar.getMonth(0);
+		panel.removeAll();
+		for (int i = 0, x = 0; i < 42; i++) {
+			if (has_days[i] != 0) {
+				panel.add(buttons[x]);
+				x++;
+			} else {
+				panel.add(new JPanel());
+			}
+		}
+		panel.revalidate();
+		panel.repaint();		
+		month.setEnabled(false);	
+	}
+	
 	/**
 	 * 
 	 * @return

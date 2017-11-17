@@ -4,7 +4,9 @@ import java.util.GregorianCalendar;
 import java.util.ArrayList;
 
 /**
- * This gives the user the visual calendars on the initial screen and the day/month screen to determine events and what day is today
+ * This gives the user the visual calendars on the initial screen and the
+ * day/month screen to determine events and what day is today
+ * 
  * @author Vivian Hoang
  *
  */
@@ -24,7 +26,9 @@ public class Calendars {
 
 	/**
 	 * Initializes the object
-	 * @param report the event list for the calendar
+	 * 
+	 * @param report
+	 *            the event list for the calendar
 	 */
 	public Calendars(EventList report) {
 		current_month = cal.get(Calendar.MONTH);
@@ -35,10 +39,26 @@ public class Calendars {
 		list_of_days.add(current_day);
 	}
 
+	public int getDay(){
+		return current_day;
+	}
+	
+	public int getMonth(){
+		return current_month+1;
+	}
+	
+	public int getYear(){
+		return current_year;
+	}
+
 	/**
-	 * This will only grab the events of the current month the user is looking at
-	 * @param events events for current months
-	 * @param n is used to determine the month for the event
+	 * This will only grab the events of the current month the user is looking
+	 * at
+	 * 
+	 * @param events
+	 *            events for current months
+	 * @param n
+	 *            is used to determine the month for the event
 	 */
 	public void passEvents(EventList events, int n) {
 		for (Event today : events) {
@@ -48,15 +68,16 @@ public class Calendars {
 			}
 		}
 	}
-	
+
 	/**
 	 * Grab events for the Go_To function
+	 * 
 	 * @param month
 	 * @param events
 	 */
-	public void passEvents(int month, EventList events){
-		for(Event today: events){
-			if(today.getMonth() == month){
+	public void passEvents(int month, EventList events) {
+		for (Event today : events) {
+			if (today.getMonth() == month) {
 				list_of_month_events.add(today);
 				list_of_days.add(today.getDay());
 			}
@@ -83,7 +104,9 @@ public class Calendars {
 
 	/**
 	 * Gets the month visual
-	 * @param prevornext determines if user what's the next or previous month
+	 * 
+	 * @param prevornext
+	 *            determines if user what's the next or previous month
 	 */
 	public int[][] get_Month_Calendar_Event(int prevornext) {
 		current_month += prevornext;
@@ -128,10 +151,11 @@ public class Calendars {
 
 	/**
 	 * Gets the name of the current month
+	 * 
 	 * @param prevornext
 	 * @return
 	 */
-	public String getMonthName(int prevornext){
+	public String getMonthName(int prevornext) {
 		current_month += prevornext;
 		if (current_month == 12) {
 			current_month = 0;
@@ -140,25 +164,27 @@ public class Calendars {
 			current_month = 11;
 			current_year--;
 		}
-		String currentmonthyear = String.valueOf(arrayOfMonths[current_month])+" " + current_year ;
+		String currentmonthyear = String.valueOf(arrayOfMonths[current_month]) + " " + current_year;
 		return currentmonthyear;
 	}
-	
-	public String[] getDayName(){
+
+	public String[] getDayName() {
 		String[] days = new String[7];
 		int x = 0;
-		for (DAYS day : arrayOfDays) { 
+		for (DAYS day : arrayOfDays) {
 			days[x] = String.valueOf(day);
 			x++;
 		}
 		return days;
 	}
-	
+
 	/**
 	 * Gets the daily events if any
-	 * @param prevornext user interacts with this class to see next or previous day 
+	 * 
+	 * @param prevornext
+	 *            user interacts with this class to see next or previous day
 	 */
-	public String getDayView(int prevornext, EventList event) {
+	public int getDayView(int prevornext, EventList event) {
 		int totaldays = cal.getActualMaximum(Calendar.DATE);
 		current_day += prevornext;
 		if (current_day > totaldays) {
@@ -166,14 +192,14 @@ public class Calendars {
 			if (current_month == 12) {
 				current_month = 0;
 				current_year++;
-				passEvents(event,1);
+				passEvents(event, 1);
 			}
 		} else if (current_day < 1) {
 			current_month--;
 			if (current_month == -1) {
 				current_month = 11;
 				current_year--;
-				passEvents(event,-1);
+				passEvents(event, -1);
 			}
 		}
 		GregorianCalendar tempo = new GregorianCalendar(current_year, current_month, current_day);
@@ -191,12 +217,14 @@ public class Calendars {
 				System.out.println(print);
 			}
 		}
-		return print;
+		return current_day;
 	}
 
 	/**
 	 * Gets the DayView for the Go_To method
-	 * @param date allows user to navigate straight to the day
+	 * 
+	 * @param date
+	 *            allows user to navigate straight to the day
 	 */
 	public String getDayView(String date) {
 		int this_month = Integer.parseInt(date.substring(0, 2));
@@ -216,29 +244,43 @@ public class Calendars {
 		return print;
 	}
 	
-	
+	/**
+	 * Gets the DayView for the Go_To method
+	 * 
+	 * @param date
+	 *            allows user to navigate straight to the day
+	 */
+	public void getDayView(int month, int day) {
+		current_day =day;
+		current_month = month;
+	}
+
 	/**
 	 * Returns the name of the current day
+	 * 
 	 * @return
 	 */
-	public String getCurrentDay(){
+	public String getCurrentDay() {
 		GregorianCalendar tempo = new GregorianCalendar(current_year, current_month, current_day);
 		FULL_DAYS that_day = arrayOfFullDays[tempo.get(Calendar.DAY_OF_WEEK) - 1];
 		return String.valueOf(that_day);
 	}
-	
+
 	/**
 	 * Returns the entire date
+	 * 
 	 * @return
 	 */
-	public String getCurrent(){
-		String date = (current_month+1)+"/"+current_day+"/"+current_year;
+	public String getCurrent() {
+		String date = (current_month + 1) + "/" + current_day + "/" + current_year;
 		return date;
 	}
 
 	/**
 	 * Prints out highlighted calendar of today or the events
-	 * @param row_column determines how many days printed in a month
+	 * 
+	 * @param row_column
+	 *            determines how many days printed in a month
 	 * @return the string of the formatted calendar
 	 */
 	public String toString(int[][] row_column) {

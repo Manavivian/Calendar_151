@@ -112,9 +112,12 @@ public class Calendar_System {
 			visual.reset();
 		}
 	}
-
-	public String getDate(){
-		return visual.getCurrent();
+	
+	public int getDay(){
+		return visual.getDay();
+	}
+	public int getMonth(){
+		return visual.getMonth();
 	}
 	
 	public void forwardDay(){
@@ -173,6 +176,13 @@ public class Calendar_System {
 	public String Go_to(String input) {
 		visual.passEvents(Integer.parseInt(input.substring(0, 2)), events);
 		return visual.getDayView(input);
+	}
+	/**
+	 * Goes to a specific date and will load the event
+	 */
+	public void Go_to(int month,int day) {
+		visual.passEvents(month, events);
+		visual.getDayView(month,day);
 	}
 
 	/**
