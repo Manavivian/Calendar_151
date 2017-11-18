@@ -15,8 +15,6 @@ import java.util.Scanner;
  *
  */
 public class Calendar_System {
-	private String message = "Select one of the following options: ";
-	private String options = "[L]oad  [V]iew by  [C]reate,  [G]o to  [E]vent list  [D]elete  [Q]uit";
 	private EventList events;
 	private Calendars visual, initial_screen;
 	private Scanner choice = new Scanner(System.in);
@@ -35,8 +33,6 @@ public class Calendar_System {
 	 */
 	public void Message_Screen() {
 		initial_screen.get_Month_Calendar_Event(0);
-		System.out.println(message);
-		System.out.println(options);
 	}
 
 	/**
@@ -68,50 +64,6 @@ public class Calendar_System {
 		}
 	}
 
-	/**
-	 * Allows user to see a visual calendar either in Month or Day View
-	 * 
-	 * @param decision
-	 *            this is user's input
-	 */
-	public void View(String decision) {
-		if (events.isEmpty() == false) {
-			visual.passEvents(events, 0);
-		} else {
-			visual.resetEvents();
-		}
-		if (decision.contains("D")) {
-			visual.getDayView(0, events);
-			do {
-				System.out.println("[P]revious or [N]ext or [M]ain menu?");
-				decision = choice.next();
-				if (decision.contains("P")) {
-					visual.getDayView(-1, events);
-				} else if (decision.contains("N")) {
-					visual.getDayView(1, events);
-				} else if (decision.contains("M")) {
-				}
-			} while (!decision.contains("M"));
-		} else if (decision.contains("M")) {
-			visual.get_Month_Calendar_Event(0);
-			do {
-				System.out.println("[P]revious or [N]ext or [M]ain menu?");
-				decision = choice.next();
-				if (decision.contains("P")) {
-					visual.resetEvents();
-					visual.passEvents(events, -1);
-					visual.get_Month_Calendar_Event(-1);
-
-				} else if (decision.contains("N")) {
-					visual.resetEvents();
-					visual.passEvents(events, 1);
-					visual.get_Month_Calendar_Event(1);
-
-				}
-			} while (!decision.contains("M"));
-			visual.reset();
-		}
-	}
 	
 	public int getDay(){
 		return visual.getDay();
@@ -126,6 +78,10 @@ public class Calendar_System {
 	
 	public void previousDay(){
 		visual.getDayView(-1,events);
+	}
+	
+	public String getYear(){
+		return String.valueOf(visual.getYear());
 	}
 	
 	public int[] getMonth(int offset) {
@@ -184,7 +140,13 @@ public class Calendar_System {
 		visual.passEvents(month, events);
 		visual.getDayView(day);
 	}
+	
+	public EventList Go_to(int day){
+		return visual.passTodayEvents(day, events);
+	}
+	
 
+	
 	/**
 	 * This the list of events printed according to earliest to latest
 	 */

@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -25,6 +26,8 @@ public class View implements ChangeListener {
 	private JPanel textfield;
 	private JPanel panel;
 	private JTextField month;
+	private JTable table;
+	private Object[][] data;
 
 	private Calendar_System calendar;
 	private JTextField currentdate;
@@ -77,6 +80,23 @@ public class View implements ChangeListener {
 		buttons[currentday - 1].setBackground(Color.LIGHT_GRAY);
 		buttons[currentday - 1].setEnabled(false);
 
+		// Table
+		String[] columnNames = { "Time", "Event" };
+		data = new Object[24][2];
+		for (int i = 0, count = 1; i < 24; i++) {
+			for (int x = 1; x < 2; x++) {
+				data[i][0] = count++;
+				data[i][x] = "";
+			}
+		}
+
+		// Table
+		table = new JTable(data, columnNames) {
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+
 		// Text field and area
 		currentdate = new JTextField(date);
 		JTextField[] fields = new JTextField[7];
@@ -90,9 +110,7 @@ public class View implements ChangeListener {
 			x++;
 			current.setEnabled(false);
 		}
-		JTextArea viewevents = new JTextArea();
 		month = new JTextField(calendar.getNameofMonth(0));
-		viewevents.setEnabled(true);
 		month.setEnabled(false);
 
 		// Adding into the panels
@@ -101,7 +119,7 @@ public class View implements ChangeListener {
 		nestmonth.add(month, BorderLayout.NORTH);
 		nestmonth.add(days, BorderLayout.CENTER);
 		textfield.add(currentdate, BorderLayout.NORTH);
-		textfield.add(viewevents, BorderLayout.CENTER);
+		textfield.add(table, BorderLayout.CENTER);
 		allnextprev_buttons.add(pmonth);
 		allnextprev_buttons.add(previous);
 		allnextprev_buttons.add(forward);
@@ -137,6 +155,25 @@ public class View implements ChangeListener {
 		if (temp != currentmonth)
 			repaint();
 		currentday = calendar.getDay();
+		EventList today = calendar.Go_to(currentday);
+		for(int i = 0; i < 24; i++){
+			data[i][1] = "";
+		}
+		
+		
+		if (today != null) {
+			for (int i = 0; i < 24; i++) {
+				for (Event current : today) {
+					int start = Integer.valueOf(current.getStarttime().substring(0,2));
+					int value = (int) table.getValueAt(i, 0);
+					if (start == value) {
+						data[i][1] = current.getTitle();
+					}
+				}
+			}
+		}
+		table.revalidate();
+		table.repaint();
 		month.setText(calendar.getNameofMonth(0));
 		currentdate.setText(date);
 		buttons[currentday - 1].setBackground(Color.LIGHT_GRAY);

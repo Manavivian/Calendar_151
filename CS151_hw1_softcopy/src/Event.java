@@ -4,7 +4,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * This is the event object that will store information of the object for sorting later
+ * This is the event object that will store information of the object for
+ * sorting later
+ * 
  * @author Vivian Hoang
  *
  */
@@ -21,25 +23,45 @@ public class Event implements Comparable<Event>, Serializable {
 
 	/**
 	 * Intializes all vairables of event including name and time
-	 * @param title description of the event
-	 * @param date MM/DD/YYYY
-	 * @param starttime Starting hours and minutes
-	 * @param endtime Ending hours and minutes
+	 * 
+	 * @param title
+	 *            description of the event
+	 * @param date
+	 *            MM/DD/YYYY
+	 * @param starttime
+	 *            Starting hours and minutes
+	 * @param endtime
+	 *            Ending hours and minutes
 	 */
 	public Event(String title, String date, String starttime, String endtime) {
 		this.title = title;
 		this.date = date;
 		this.starttime = starttime;
 		this.endtime = endtime;
-		month = Integer.parseInt(date.substring(0, 2));
-		day = Integer.parseInt(date.substring(3, 5));
-		year = Integer.parseInt(date.substring(6, 10));
+		String[] dates = new String[3];
+		int total = date.length();
+		int start = 0;
+		int count = 0;
+		for (int i = 0; i < total; i++) {
+			if (date.charAt(i) == ('/')) {
+				dates[count] = date.substring(start, i);
+				start = i+1;
+				count++;
+			} else if(i == total-1){
+				dates[count]=date.substring(start,i+1);
+			}
+		}
+		month = Integer.valueOf(dates[0]);
+		day = Integer.valueOf(dates[1]);
+		year = Integer.valueOf(dates[2]);
+
 		hour = Integer.parseInt(starttime.substring(0, 2));
 		minutes = Integer.parseInt(starttime.substring(3, 5));
 	}
 
 	/**
 	 * Gives title/description
+	 * 
 	 * @return title
 	 */
 	public String getTitle() {
@@ -48,6 +70,7 @@ public class Event implements Comparable<Event>, Serializable {
 
 	/**
 	 * Gives MM/DD/YYYY
+	 * 
 	 * @return date
 	 */
 	public String getDate() {
@@ -56,6 +79,7 @@ public class Event implements Comparable<Event>, Serializable {
 
 	/**
 	 * Gives year
+	 * 
 	 * @return year
 	 */
 	public int getYear() {
@@ -63,7 +87,8 @@ public class Event implements Comparable<Event>, Serializable {
 	}
 
 	/**
-	 *  Gives month
+	 * Gives month
+	 * 
 	 * @return month
 	 */
 	public int getMonth() {
@@ -71,7 +96,8 @@ public class Event implements Comparable<Event>, Serializable {
 	}
 
 	/**
-	 *  Gives day
+	 * Gives day
+	 * 
 	 * @return day
 	 */
 	public int getDay() {
@@ -80,6 +106,7 @@ public class Event implements Comparable<Event>, Serializable {
 
 	/**
 	 * Gives starting hours
+	 * 
 	 * @return starttime
 	 */
 	public String getStarttime() {
@@ -88,6 +115,7 @@ public class Event implements Comparable<Event>, Serializable {
 
 	/**
 	 * Gives ending hours
+	 * 
 	 * @return end time
 	 */
 	public String getEndtime() {
@@ -137,14 +165,15 @@ public class Event implements Comparable<Event>, Serializable {
 	public String toString() {
 		MONTHS[] arrayOfMonths = MONTHS.values();
 		FULL_DAYS[] arrayOfDays = FULL_DAYS.values();
-		GregorianCalendar tempo = new GregorianCalendar(year, month-1, day);
+		GregorianCalendar tempo = new GregorianCalendar(year, month - 1, day);
 		int themonth = tempo.get(Calendar.MONTH);
 		int theday = tempo.get(Calendar.DAY_OF_WEEK);
 		if (endtime.equals("n/a")) {
-			return "   " + arrayOfDays[theday-1] + " " + arrayOfMonths[themonth]+" " + day + " " + starttime + " " + title;
+			return "   " + arrayOfDays[theday - 1] + " " + arrayOfMonths[themonth] + " " + day + " " + starttime + " "
+					+ title;
 		}
-		return "   " + arrayOfDays[theday-1] + " " + arrayOfMonths[themonth] +" "+ day + " " + starttime + " - " + endtime
-				+ " " + title;
+		return "   " + arrayOfDays[theday - 1] + " " + arrayOfMonths[themonth] + " " + day + " " + starttime + " - "
+				+ endtime + " " + title;
 	}
 
 }

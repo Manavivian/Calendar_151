@@ -59,7 +59,7 @@ public class EventModel {
 	}
 	
 	public String currentDate(){
-		String current = calendar.getMonth()+ " " + calendar.getDay();
+		String current = calendar.getMonth()+ "/" + calendar.getDay()+"/"+calendar.getYear();
 		return current;
 	}
 	

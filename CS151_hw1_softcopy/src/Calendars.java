@@ -62,13 +62,14 @@ public class Calendars {
 	 */
 	public void passEvents(EventList events, int n) {
 		for (Event today : events) {
-			if (today.getMonth() == (current_month + 1 + n)) {
+			if (today.getMonth() == (current_month + 1 + n) && today.getYear() == current_year) {
 				list_of_month_events.add(today);
 				list_of_days.add(today.getDay());
 			}
 		}
 	}
 
+	
 	/**
 	 * Grab events for the Go_To function
 	 * 
@@ -77,12 +78,25 @@ public class Calendars {
 	 */
 	public void passEvents(int month, EventList events) {
 		for (Event today : events) {
-			if (today.getMonth() == month) {
+			if (today.getMonth() == month && today.getYear() == current_year) {
 				list_of_month_events.add(today);
 				list_of_days.add(today.getDay());
 			}
 		}
 	}
+	
+	public EventList passTodayEvents(int day, EventList events){
+		EventList todayact = new EventList();
+		for (Event today : events) {
+			if (today.getDay() == current_day && today.getMonth() == current_month+1 && today.getYear() == current_year) {
+				list_of_month_events.add(today);
+				todayact.add(today);
+				list_of_days.add(today.getDay());
+			}
+		}
+		return todayact;
+	}
+	
 
 	/**
 	 * Returns all the instant variables back to default
@@ -145,7 +159,6 @@ public class Calendars {
 				}
 			}
 		}
-		System.out.println(toString(row_column));
 		return row_column;
 	}
 
@@ -200,21 +213,6 @@ public class Calendars {
 				current_month = 11;
 				current_year--;
 				passEvents(event, -1);
-			}
-		}
-		GregorianCalendar tempo = new GregorianCalendar(current_year, current_month, current_day);
-		FULL_DAYS that_day = arrayOfFullDays[tempo.get(Calendar.DAY_OF_WEEK) - 1];
-		AB_MONTHS that_month = arrayOfABMonths[tempo.get(Calendar.MONTH)];
-		System.out.println(that_day + ", " + that_month + " " + current_day + ", " + current_year);
-		String print = "";
-		for (Event current : list_of_month_events) {
-			if (current.getDay() == (current_day)) {
-				if (!current.getEndtime().equals("n/a")) {
-					print = current.getTitle() + " " + current.getStarttime() + " - " + current.getEndtime();
-				} else {
-					print = current.getTitle() + " " + current.getStarttime();
-				}
-				System.out.println(print);
 			}
 		}
 		return current_day;
