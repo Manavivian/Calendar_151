@@ -1,6 +1,6 @@
 import java.io.IOException;
 
-public class MVCTester {
+public class SimpleCalendar {
 
 	public static void main(String[] args) throws IOException {
 		View Cal = new View();
@@ -8,7 +8,6 @@ public class MVCTester {
 		Controller connect = new Controller(events);
 		events.attach(Cal);
 		connect.attach(Cal);
-
 	}
 
 }

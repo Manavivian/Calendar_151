@@ -64,48 +64,48 @@ public class Calendar_System {
 		}
 	}
 
-	
-	public int getDay(){
+	public int getDay() {
 		return visual.getDay();
 	}
-	public int getMonth(){
+
+	public int getMonth() {
 		return visual.getMonth();
 	}
-	
-	public void forwardDay(){
-		visual.getDayView(1,events);
+
+	public void forwardDay() {
+		visual.getDayView(1, events);
 	}
-	
-	public void previousDay(){
-		visual.getDayView(-1,events);
+
+	public void previousDay() {
+		visual.getDayView(-1, events);
 	}
-	
-	public String getYear(){
+
+	public String getYear() {
 		return String.valueOf(visual.getYear());
 	}
-	
+
 	public int[] getMonth(int offset) {
 		int[][] convert = visual.get_Month_Calendar_Event(offset);
 		int[] days = new int[42];
 		for (int x = 0, z = 0; x < 6; x++) {
 			for (int y = 0; y < 7; y++) {
-				days[z]=convert[x][y];
+				days[z] = convert[x][y];
 				z++;
 			}
 		}
 
 		return days;
 	}
-	
-	public String getNameofMonth(int offset){
+
+	public String getNameofMonth(int offset) {
 		return visual.getMonthName(offset);
 	}
-	
-	public String[] getDayNames(){
+
+	public String[] getDayNames() {
 		return visual.getDayName();
 	}
-	
-	public String getNameofDay(){
+
+	public String getNameofDay() {
 		return visual.getCurrentDay();
 	}
 
@@ -133,20 +133,19 @@ public class Calendar_System {
 		visual.passEvents(Integer.parseInt(input.substring(0, 2)), events);
 		return visual.getDayView(input);
 	}
+
 	/**
 	 * Goes to a specific date and will load the event
 	 */
-	public void Go_to(int month,int day) {
+	public void Go_to(int month, int day) {
 		visual.passEvents(month, events);
 		visual.getDayView(day);
 	}
-	
-	public EventList Go_to(int day){
+
+	public EventList Go_to(int day) {
 		return visual.passTodayEvents(day, events);
 	}
-	
 
-	
 	/**
 	 * This the list of events printed according to earliest to latest
 	 */
@@ -159,7 +158,7 @@ public class Calendar_System {
 				System.out.println(print.getYear());
 				prev_year = print.getYear();
 			}
-			System.out.println(print);
+			//System.out.println(print);
 		}
 	}
 
@@ -169,23 +168,34 @@ public class Calendar_System {
 	 * @param decision
 	 *            this is user input
 	 */
-	public void Delete(String decision) {
-		String comparison = null;
-		if (decision.contains("S")) {
-			do {
-				System.out.println("Enter the date (MM/DD/YYYY): ");
-				comparison = choice.next();
-			} while (MyCalendarTester.qualifiedDate(comparison) == false);
-			for (Event it : events.getSorted()) {
-				if (it.getDate().equals(comparison))
-					events.remove(it);
+	public void Delete(String date) {
+		String[] dates = new String[3];
+		int total = date.length();
+		int start = 0;
+		int count = 0;
+		for (int i = 0; i < total; i++) {
+			if (date.charAt(i) == ('/')) {
+				dates[count] = date.substring(start, i);
+				start = i+1;
+				count++;
+			} else if(i == total-1){
+				dates[count]=date.substring(start,i+1);
 			}
-
-		} else if (decision.contains("A")) {
-			events = new EventList();
-			visual.reset();
+		}
+		String month = dates[0];
+		String day = dates[1];
+		if(month.length() == 1)
+			month = "0"+dates[0];
+		if(day.length() ==1)
+			day = "0" + dates[1];
+		String year = dates[2];
+		String thedate = month+"/"+day+"/"+year;
+		for (Event it : events.getSorted()) {
+				if (it.getDate().equals(thedate))
+					events.remove(it);
 		}
 	}
+	
 
 	/**
 	 * This will save all the events into a txt file and leave while closing the
@@ -206,4 +216,36 @@ public class Calendar_System {
 		return events;
 	}
 
+	/**
+	 * Determines if the start time follows the format given (HH:MM)
+	 * 
+	 * @param starttime
+	 * @return
+	 */
+	public boolean qualifiedtime(String starttime, String endtime) {
+		boolean isTrue = true;
+		if (starttime.equals("HH:MM")) {
+			return false;
+		} else if (starttime.length() < 5) {
+			return false;
+		} else if (starttime.length() > 5) {
+			return false;
+		} else if (starttime.length() == 10) {
+			for (int i = 0; i < starttime.length(); i++) {
+				if (i != 2 || i != 5) {
+					isTrue = Character.isLetter(starttime.charAt(i));
+					if (isTrue == false)
+						return false;
+				}
+			}
+		}
+		if (Integer.parseInt(starttime.substring(0, 2)) > 24)
+			return false;
+
+		isTrue = visual.getRange(starttime, endtime, events);
+
+		return isTrue;
+	}
+
+	
 }

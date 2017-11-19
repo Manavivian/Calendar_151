@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Controller {
@@ -26,9 +27,9 @@ public class Controller {
 	 * @param v
 	 */
 	public void attach(View main) {
-		for(JButton current: main.getDays()){
-			current.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
+		for (JButton current : main.getDays()) {
+			current.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
 					String name = e.getActionCommand();
 					int daydate = Integer.valueOf(name);
 					int month = model.getMonthDate();
@@ -37,7 +38,9 @@ public class Controller {
 			});
 		}
 		main.getCreateButton().addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+				JOptionPane error = new JOptionPane();
 				String currentDate = model.currentDate();
 				JFrame create_window = new JFrame("Create Event");
 				JPanel time = new JPanel();
@@ -46,31 +49,39 @@ public class Controller {
 				current_date.setEditable(false);
 				TextField starting_time = new TextField("HH:MM");
 				TextField ending_time = new TextField("HH:MM");
-				
+
 				JButton save = new JButton("Save");
 				save.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if((name_of_event.getText() != null) && (starting_time.getText() != null))
-							model.add(name_of_event.getText(), currentDate, starting_time.getText(), ending_time.getText());
+						boolean qualified = true;
+						qualified = model.qualifiedTime(starting_time.getText(), ending_time.getText());
+						if (qualified == false) {
+							JOptionPane.showMessageDialog(error, "Event could not be created due to conflict!");
+						} else {
+
+							if ((name_of_event.getText() != null) && (starting_time.getText() != null))
+								model.add(name_of_event.getText(), currentDate, starting_time.getText(),
+										ending_time.getText());
+						}
 						create_window.dispose();
 					}
-					
 				});
 
 				time.add(current_date);
 				time.add(starting_time);
 				time.add(ending_time);
 				time.add(save);
-				
+
 				create_window.add(name_of_event, BorderLayout.NORTH);
 				create_window.add(time, BorderLayout.CENTER);
-							
+
 				create_window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				create_window.pack();
 				create_window.setVisible(true);
 			}
 		});
 		main.getForwardButton().addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				model.nextDay();
 			}
@@ -90,14 +101,19 @@ public class Controller {
 				model.nextMonth();
 			}
 		});
+		main.getDeleteButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.Delete(model.currentDate());
+			}
+		});
 		main.getQuitButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					main.getCalendar().Quit();
 				} catch (IOException ok) {
-					System.out.println("Location: Quit: "+ ok);
+					System.out.println("Location: Quit: " + ok);
 				}
-				
+
 				main.getMainFrame().dispose();
 			}
 		});

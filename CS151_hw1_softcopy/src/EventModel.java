@@ -54,6 +54,12 @@ public class EventModel {
 			l.stateChanged(new ChangeEvent(this));
 	}
 	
+	public void Delete(String date){
+		calendar.Delete(date);
+		for(ChangeListener l: listeners)
+			l.stateChanged(new ChangeEvent(this));
+	}
+	
 	public int getMonthDate(){
 		return calendar.getMonth();
 	}
@@ -68,6 +74,11 @@ public class EventModel {
 		return events;
 	}
 	
+	public boolean qualifiedTime(String starttime, String endtime){
+		return calendar.qualifiedtime(starttime,endtime);
+	}
+	
+
 	
 	public Calendar_System getCalendar(){
 		return calendar;

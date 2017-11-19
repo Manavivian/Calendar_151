@@ -1,5 +1,6 @@
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -119,6 +120,9 @@ public class Event implements Comparable<Event>, Serializable {
 	 * @return end time
 	 */
 	public String getEndtime() {
+		if(endtime.equals("HH:MM")){
+			return "n/a";
+		}
 		return endtime;
 	}
 

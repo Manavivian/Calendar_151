@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -28,6 +27,7 @@ public class View implements ChangeListener {
 	private JTextField month;
 	private JTable table;
 	private Object[][] data;
+	private JButton delete;
 
 	private Calendar_System calendar;
 	private JTextField currentdate;
@@ -53,6 +53,7 @@ public class View implements ChangeListener {
 		JPanel allnextprev_buttons = new JPanel(new GridLayout(1, 4));
 
 		// Buttons for the locations
+		delete = new JButton("Delete");
 		quit = new JButton("Quit");
 		create = new JButton("Create");
 		previous = new JButton("<");
@@ -131,6 +132,7 @@ public class View implements ChangeListener {
 		all_buttons.setLayout(new BoxLayout(all_buttons, BoxLayout.X_AXIS));
 		all_buttons.add(createbutton);
 		all_buttons.add(allnextprev_buttons);
+		all_buttons.add(delete);
 		all_buttons.add(quitbutton);
 
 		// Adding the panels into the frame
@@ -167,7 +169,7 @@ public class View implements ChangeListener {
 					int start = Integer.valueOf(current.getStarttime().substring(0,2));
 					int value = (int) table.getValueAt(i, 0);
 					if (start == value) {
-						data[i][1] = current.getTitle();
+						data[i][1] = current.getTitle()+ " " + current.getStarttime() + "-" + current.getEndtime();
 					}
 				}
 			}
@@ -198,6 +200,11 @@ public class View implements ChangeListener {
 		panel.repaint();
 	}
 
+	
+	public JButton getDeleteButton(){
+		return delete;
+	}
+	
 	/**
 	 * 
 	 * @return

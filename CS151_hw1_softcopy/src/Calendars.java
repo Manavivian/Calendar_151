@@ -39,15 +39,15 @@ public class Calendars {
 		list_of_days.add(current_day);
 	}
 
-	public int getDay(){
+	public int getDay() {
 		return current_day;
 	}
-	
-	public int getMonth(){
-		return current_month+1;
+
+	public int getMonth() {
+		return current_month + 1;
 	}
-	
-	public int getYear(){
+
+	public int getYear() {
 		return current_year;
 	}
 
@@ -69,7 +69,6 @@ public class Calendars {
 		}
 	}
 
-	
 	/**
 	 * Grab events for the Go_To function
 	 * 
@@ -84,11 +83,12 @@ public class Calendars {
 			}
 		}
 	}
-	
-	public EventList passTodayEvents(int day, EventList events){
+
+	public EventList passTodayEvents(int day, EventList events) {
 		EventList todayact = new EventList();
 		for (Event today : events) {
-			if (today.getDay() == current_day && today.getMonth() == current_month+1 && today.getYear() == current_year) {
+			if (today.getDay() == current_day && today.getMonth() == current_month + 1
+					&& today.getYear() == current_year) {
 				list_of_month_events.add(today);
 				todayact.add(today);
 				list_of_days.add(today.getDay());
@@ -96,7 +96,6 @@ public class Calendars {
 		}
 		return todayact;
 	}
-	
 
 	/**
 	 * Returns all the instant variables back to default
@@ -130,10 +129,6 @@ public class Calendars {
 		} else if (current_month == -1) {
 			current_month = 11;
 			current_year--;
-		}
-		System.out.println(arrayOfMonths[current_month] + " " + current_year);
-		for (DAYS day : arrayOfDays) { // prints the days
-			System.out.print(day + " ");
 		}
 		int[][] row_column = new int[row][col];
 		GregorianCalendar tempo = new GregorianCalendar(current_year, current_month, 1);
@@ -201,6 +196,7 @@ public class Calendars {
 		int totaldays = cal.getActualMaximum(Calendar.DATE);
 		current_day += prevornext;
 		if (current_day > totaldays) {
+			current_day = 1;
 			current_month++;
 			if (current_month == 12) {
 				current_month = 0;
@@ -209,6 +205,9 @@ public class Calendars {
 			}
 		} else if (current_day < 1) {
 			current_month--;
+			GregorianCalendar tempo = new GregorianCalendar(current_year, current_month, 1);
+			totaldays = tempo.getActualMaximum(Calendar.DATE);
+			current_day = totaldays;
 			if (current_month == -1) {
 				current_month = 11;
 				current_year--;
@@ -241,7 +240,46 @@ public class Calendars {
 		}
 		return print;
 	}
-	
+
+	public boolean getRange(String starttime, String endtime, EventList events) {
+		EventList todayact = new EventList();
+		for (Event today : events) {
+			if (today.getDay() == current_day && today.getMonth() == current_month + 1
+					&& today.getYear() == current_year) {
+				list_of_month_events.add(today);
+				todayact.add(today);
+				list_of_days.add(today.getDay());
+			}
+		}
+		int start =0;
+		int end = 0;
+		if (endtime.equals("HH:MM")) {
+			int start_min = Integer.valueOf(starttime.substring(3, 5));
+			int start_hr = Integer.valueOf(starttime.substring(0, 2));
+			start = (60*start_hr) + start_min;
+			end = (60 * 24);
+		} else {
+			int start_min = Integer.valueOf(endtime.substring(3, 5));
+			int start_hr = Integer.valueOf(starttime.substring(0, 2));
+			int end_min = Integer.valueOf(endtime.substring(3, 5));
+			int end_hr = Integer.valueOf(starttime.substring(0, 2));
+			start = (60 * start_hr) + start_min;
+			end = (60 * end_hr) + end_min;
+		}
+
+		for (Event today : todayact) {
+			int startmin = Integer.valueOf(today.getStarttime().substring(3, 5));
+			int starthr = Integer.valueOf(today.getStarttime().substring(0, 2));
+			int endmin = Integer.valueOf(today.getEndtime().substring(3, 5));
+			int endhr = Integer.valueOf(today.getEndtime().substring(0, 2));
+			int starting = (60 * starthr) + startmin;
+			int ending = (60 * endhr) + endmin;
+			if ((start > starting && start < ending) || (start < starting && end < ending && end > starting))
+				return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Gets the DayView for the Go_To method
 	 * 
@@ -249,7 +287,7 @@ public class Calendars {
 	 *            allows user to navigate straight to the day
 	 */
 	public void getDayView(int day) {
-		current_day =day;
+		current_day = day;
 	}
 
 	/**
