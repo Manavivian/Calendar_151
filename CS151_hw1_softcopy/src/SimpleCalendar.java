@@ -1,5 +1,9 @@
 import java.io.IOException;
-
+/**
+ * This is the main class tester of the GUI calendar
+ * @author Vivian Hoang
+ *
+ */
 public class SimpleCalendar {
 
 	public static void main(String[] args) throws IOException {

@@ -13,6 +13,11 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * This shows the view to the user
+ * @author Vivian Hoang
+ *
+ */
 public class View implements ChangeListener {
 	private JButton quit;
 	private JButton create;

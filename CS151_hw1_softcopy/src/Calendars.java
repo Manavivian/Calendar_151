@@ -39,14 +39,26 @@ public class Calendars {
 		list_of_days.add(current_day);
 	}
 
+	/**
+	 * Returns the day
+	 * @return
+	 */
 	public int getDay() {
 		return current_day;
 	}
 
+	/**
+	 * Returns the current month
+	 * @return
+	 */
 	public int getMonth() {
 		return current_month + 1;
 	}
 
+	/**
+	 * Returns the current year
+	 * @return
+	 */
 	public int getYear() {
 		return current_year;
 	}
@@ -84,6 +96,12 @@ public class Calendars {
 		}
 	}
 
+	/**
+	 * This passes all the events for the current day
+	 * @param day
+	 * @param events
+	 * @return
+	 */
 	public EventList passTodayEvents(int day, EventList events) {
 		EventList todayact = new EventList();
 		for (Event today : events) {
@@ -241,6 +259,13 @@ public class Calendars {
 		return print;
 	}
 
+	/**
+	 * Determines if the time are within reasonable range
+	 * @param starttime
+	 * @param endtime
+	 * @param events
+	 * @return
+	 */
 	public boolean getRange(String starttime, String endtime, EventList events) {
 		EventList todayact = new EventList();
 		for (Event today : events) {
@@ -259,10 +284,10 @@ public class Calendars {
 			start = (60*start_hr) + start_min;
 			end = (60 * 24);
 		} else {
-			int start_min = Integer.valueOf(endtime.substring(3, 5));
+			int start_min = Integer.valueOf(starttime.substring(3, 5));
 			int start_hr = Integer.valueOf(starttime.substring(0, 2));
 			int end_min = Integer.valueOf(endtime.substring(3, 5));
-			int end_hr = Integer.valueOf(starttime.substring(0, 2));
+			int end_hr = Integer.valueOf(endtime.substring(0, 2));
 			start = (60 * start_hr) + start_min;
 			end = (60 * end_hr) + end_min;
 		}
@@ -274,7 +299,7 @@ public class Calendars {
 			int endhr = Integer.valueOf(today.getEndtime().substring(0, 2));
 			int starting = (60 * starthr) + startmin;
 			int ending = (60 * endhr) + endmin;
-			if ((start > starting && start < ending) || (start < starting && end < ending && end > starting))
+			if ((start >= starting && start <= ending) || (start <= starting && end <= ending && end >= starting))
 				return false;
 		}
 		return true;

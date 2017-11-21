@@ -7,7 +7,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+/**
+ * This controls the interaction of the view and the manipulation of data in EventModel
+ * @author Mana
+ *
+ */
 public class Controller {
 	private EventModel model;
 

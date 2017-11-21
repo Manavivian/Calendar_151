@@ -64,26 +64,49 @@ public class Calendar_System {
 		}
 	}
 
+	/**
+	 * Gets the day
+	 * @return
+	 */
 	public int getDay() {
 		return visual.getDay();
 	}
 
+	/**
+	 * Gets the current month
+	 * @return
+	 */
 	public int getMonth() {
 		return visual.getMonth();
 	}
 
+	/**
+	 * Moves the date forward in calendar
+	 */
 	public void forwardDay() {
 		visual.getDayView(1, events);
 	}
 
+	/**
+	 * Moves the date backward in calendar
+	 */
 	public void previousDay() {
 		visual.getDayView(-1, events);
 	}
 
+	/**
+	 * Gives the year
+	 * @return
+	 */
 	public String getYear() {
 		return String.valueOf(visual.getYear());
 	}
 
+	/**
+	 * Returns the single arrays of avaiable days
+	 * @param offset
+	 * @return
+	 */
 	public int[] getMonth(int offset) {
 		int[][] convert = visual.get_Month_Calendar_Event(offset);
 		int[] days = new int[42];
@@ -97,14 +120,27 @@ public class Calendar_System {
 		return days;
 	}
 
+	/**
+	 * Gets the current name of the current month
+	 * @param offset
+	 * @return
+	 */
 	public String getNameofMonth(int offset) {
 		return visual.getMonthName(offset);
 	}
 
+	/**
+	 * Gets all of the day names
+	 * @return
+	 */
 	public String[] getDayNames() {
 		return visual.getDayName();
 	}
 
+	/**
+	 * Gets all the name of days
+	 * @return
+	 */
 	public String getNameofDay() {
 		return visual.getCurrentDay();
 	}
